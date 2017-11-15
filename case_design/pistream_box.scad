@@ -9,18 +9,19 @@ length = 65 + cable_room + 5 + (wall_thickness * 2);
 // board size + inset spacing + wall thickness.
 width = 30 + 2+ (wall_thickness * 2);
 
-camera_y_offset = 3;
-
 module support_peg(x, y, z) {
     union() {
         standoff_height = 4;
         
         translate([x, y, z])
-        scale([1/10, 1/10, 1/10]) cylinder(standoff_height * 10, d = 40);
+            scale([1/10, 1/10, 1/10]) 
+                cylinder(standoff_height * 10, d = 40);
         translate([x + 0, y + 0, z + standoff_height])
-        scale([1/10, 1/10, 1/10]) cylinder(15, d = 25);
+            scale([1/10, 1/10, 1/10]) 
+                cylinder(15, d = 25);
         translate([x + 0, y + 0, z + standoff_height + 1.5])
-        scale([1/10, 1/10, 1/10]) cylinder(10, d1 = 25, d2 = 10);
+            scale([1/10, 1/10, 1/10])
+                cylinder(10, d1 = 25, d2 = 10);
     }
 }
 
@@ -59,6 +60,58 @@ module mount(x = 0, y = 0, z = 0) {
                                   [15.5, -2.5]]);
     }
 }
+
+// Build a positive of the camera module.
+module camera_hollow(x = 0, y = 0, z = 0) {
+    union() {
+        // extra space around camera board.
+        translate([x - 2, y - 2, z])
+            cube([29, 28, 4]);
+        
+        // actual size of camera board.
+        translate([x, y, z])
+            cube([25, 24, 4]);
+        
+        // camera sensor cavity
+        translate([x + 7.5, y + 4.5, z + 4])
+            cube([10,10,6]);
+
+        // Opening for lens
+        translate([x + 12.5, y+ 9.5, z + 4 + 6])
+        scale([1/10, 1/10, 1/10])
+            cylinder(80, d = 120);
+        
+        // Sunny cable opening
+        translate([x + 7.5, y + 4.5 + 10, z + 4])
+            cube([10, 11, 2.5]);
+
+        // LED
+        translate([x + 25 - 4, y + 24 - 4, z + 4])
+            scale([1/10, 1/10, 1/10]) 
+            cylinder(30, r1 = 25, r2 = 10);
+                
+        // Opening for signal cable
+        translate([x + 2, y - 8, z])
+            cube([21, 8, 4]);
+    }
+}
+
+module camera_pegs(x = 0, y = 0, z = 0) {
+    // mounting points for camera board.
+    translate([x + 2, y + 9.5, z + 1.5])
+        scale([1/10, 1/10, 1/10]) 
+        cylinder(10, r1 = 8, r2 = 10);
+    translate([x + 2 + 21, y + 9.5, z + 1.5])
+        scale([1/10, 1/10, 1/10]) 
+        cylinder(10, r1 = 8, r2 = 10);
+    translate([x + 2, y + 9.5, z + 2.5])
+        scale([1/10, 1/10, 1/10]) 
+        cylinder(15, r = 10);
+    translate([x + 2 + 21, y + 9.5, z + 2.5])
+        scale([1/10, 1/10, 1/10]) 
+        cylinder(15, r = 10);
+}    
+
 
 // Actual Box Parts
 color("grey")
@@ -140,7 +193,7 @@ color("grey")
                         ]);
                     
                         // lens mount outline
-                        translate([(length / 2), (width / 2) + camera_y_offset, -12])
+                        translate([(length / 2), (width / 2) + 1.5, -12])
                             scale([1/10, 1/10, 1/10]) 
                                 // 4 cm diff
                                 cylinder(120, d = 120 + (wall_thickness * 2 * 10));
@@ -148,49 +201,17 @@ color("grey")
                 
                 // Mounting bracket base
                 translate([(length / 2) + 4.5, 0, -6]) rotate([0, 270, 0]) mount();
-                
-                // Camera lens base
-                translate([(length / 2) - 8, (width / 2) - 8 + camera_y_offset, -8])
-                    linear_extrude(height = 6)
-                        square(16, 16);
             };
             
-            // Camera Board Cavity
-            translate([length / 2, (width / 2) + camera_y_offset, -1])
-                cube([26, 25, 4], center = true);
-            
-            // Opening for lens
-            translate([(length / 2), (width / 2) + camera_y_offset, -12]) 
-                scale([1/10, 1/10, 1/10])
-                    cylinder(80, d = 120);
-            
-            // camera sensor cavity
-            translate([(length / 2) - 5, (width / 2) - 5 + camera_y_offset, -8])
-                linear_extrude(height = 6)
-                    square(10, 10);
-     
-            // Sunny cable opening
-            translate([(length / 2) - 4, (width / 2) +4 + camera_y_offset, -5])
-                linear_extrude(height = 2)
-                    square([8, 8]);
-     
-            // Opening for LED
-             translate([(length / 2) - 12.5 + 4, (width / 2) + 14.5 - 4 + camera_y_offset, -10])
-                scale([1/10, 1/10, 1/10]) 
-                    cylinder(100, d = 20);
-                    
-              // Opening for signal cable
-              translate([(length / 2) - 8, wall_thickness, -3])
-                    cube([16, 4 + camera_y_offset, 4]);
+                // Create the hollow centered. subtract half the x/y size of the camera board.
+            rotate([0, 180, 0])
+                translate([-length, 0, -1])
+                    camera_hollow((length / 2) - 12.5,  (width / 2) - (24 / 2) + wall_thickness + 1.5, 0);
     };
-        
-        // camera mount pegs
-        translate([(length / 2) - 10.5, (width / 2) + camera_y_offset, -2])
-            scale([1/10, 1/10, 1/10])
-                cylinder(40, d = 19, center = true);
-        translate([(length / 2) + 10.5, (width / 2) + camera_y_offset, -2])
-            scale([1/10, 1/10, 1/10])
-                cylinder(40, d = 19, center = true);
+    
+    rotate([0, 180, 0])
+    translate([-length, 0, -1])
+        camera_pegs((length / 2) - 12.5,  (width / 2) - (24 / 2) + wall_thickness + 1.5, 0);
 };
 
     
