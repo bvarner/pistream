@@ -31,12 +31,6 @@ module board_supports(x, y, z) {
     support_peg(x + 3.5 + 58, y + 3.5 + 23, z);
 }
 
-module vent_hole(i) {
-            translate([100 + (length / 4), wall_thickness * (i + 1), 0])
-                linear_extrude(height = 1)
-                    square([((length / 4) * 2), wall_thickness]);
-}
-
 // x = is the midpoint location for the mount.
 module mount(x = 0, y = 0, z = 0) {
     difference() {
@@ -204,7 +198,7 @@ color("grey")
 union() {
     difference() {
         translate([100, 0, 0])
-            linear_extrude(height = 2)
+            linear_extrude(height = 1)
                 square([length, width]);
         translate([100 + wall_thickness, wall_thickness, 1])
             linear_extrude(height = 1)
@@ -212,40 +206,36 @@ union() {
         translate([100, wall_thickness, 1])
             linear_extrude(height = 1)
                 square([length, width - (wall_thickness * 2)]);
-            // Ventilation Holes
-            vent_hole(1);
-            vent_hole(3);
-            vent_hole((width / wall_thickness) - 4);
-            vent_hole((width / wall_thickness) - 6);
     };
+
     // Slide rails
-    translate([100 + length, 0, 2]) rotate([0, 270, 0]) 
+    translate([100 + length, 0, 1]) rotate([0, 270, 0]) 
         linear_extrude(height = length)
             polygon([
                 [0,0], 
                 [2.4, 0], 
-                [2.4, wall_thickness * .75 - .1], 
-                [1.6, wall_thickness * .75 - .1], 
-                [.8, (wall_thickness / 2) - .1 ], 
-                [0, (wall_thickness / 2) - .1]
+                [2.4, wall_thickness * .75 - .4], 
+                [1.6, wall_thickness * .75 - .4], 
+                [.8, (wall_thickness / 2) - .4 ], 
+                [0, (wall_thickness / 2) - .4]
             ]);
     // For the inverse slide rail side, rotate 180 to extrude in the opposite direction, then rotate & translate into final position.
-    translate([100 + length, width, 2]) rotate([0, 270, 0]) 
+    translate([100 + length, width, 1]) rotate([0, 270, 0]) 
         linear_extrude(height = length)
             rotate([180, 0, 0])
             polygon([
                 [0,0], 
                 [2.4, 0], 
-                [2.4, wall_thickness * .75 - .1], 
-                [1.6, wall_thickness * .75 - .1], 
-                [.8, (wall_thickness / 2) - .1 ], 
-                [0, (wall_thickness / 2) - .1]
+                [2.4, wall_thickness * .75 - .4], 
+                [1.6, wall_thickness * .75 - .4], 
+                [.8, (wall_thickness / 2) - .4], 
+                [0, (wall_thickness / 2) - .4]
             ]);
     // Case Detents
-        translate([100 + wall_thickness * .75, wall_thickness * .5, 3]) 
-            scale([1/10, 1/10, 1/10]) cylinder(25, d = (.5 * wall_thickness * 10) - 2, center = true);
-        translate([100 + wall_thickness * .75, width - (wall_thickness * .5),3]) 
-            scale([1/10, 1/10, 1/10]) cylinder(25, d = (.5 * wall_thickness * 10) - 2, center = true);
+        translate([100 + wall_thickness * .75, wall_thickness * .5 - .2, 2]) 
+            scale([1/10, 1/10, 1/10]) cylinder(25, d = (.5 * wall_thickness * 10) - 4, center = true);
+        translate([100 + wall_thickness * .75, width - (wall_thickness * .5 -.2), 2]) 
+            scale([1/10, 1/10, 1/10]) cylinder(25, d = (.5 * wall_thickness * 10) - 4, center = true);
 
 
 }
