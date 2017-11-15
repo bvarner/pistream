@@ -46,7 +46,7 @@ module mount(x = 0, y = 0, z = 0) {
         // Screw hole.
         translate([x + (15.5 / 2), y - (15.5), z + 4.5]) 
             scale([1/10, 1/10, 1/10])
-                cylinder(90, d = 62, center = true);
+                cylinder(90, d = 52, center = true);
         // Slot between forks
         translate([x, y - (10.45 + 15.5), z + 3])
             linear_extrude(height = 3)
@@ -56,7 +56,7 @@ module mount(x = 0, y = 0, z = 0) {
             linear_extrude(height = 9)
                 polygon([[13.5, 0],
                                   [15.5, 0],
-                                  [15.5, -12.75]]);
+                                  [15.5, -2.5]]);
     }
 }
 
