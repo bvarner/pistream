@@ -84,7 +84,7 @@ module camera_hollow(x = 0, y = 0, z = 0) {
             cube([10,10,6]);
 
         // Opening for lens
-        translate([x + 12.5, y+ 10, z + 4 + 6])
+        translate([x + 12.5, y+ 10, z + 6])
         scale([1/10, 1/10, 1/10])
             cylinder(100, d = 120);
         
