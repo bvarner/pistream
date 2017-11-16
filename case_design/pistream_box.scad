@@ -95,7 +95,7 @@ module camera_hollow(x = 0, y = 0, z = 0) {
         // LED
         translate([x + 25 - 4, y + 24 - 4, z + 4])
             scale([1/10, 1/10, 1/10]) 
-            cylinder(30, r1 = 25, r2 = 10);
+            cylinder(40, r1 = 25, r2 = 10);
                 
         // Opening for signal cable
         translate([x + 2, y - 8, z])
@@ -211,7 +211,13 @@ color("grey")
                 translate([(length / 2) + 4.5, 0, -5.5]) rotate([0, 270, 0]) mount();
             };
             
-                // Create the hollow centered. subtract half the x/y size of the camera board.
+            // Power / Activity LED
+            translate([wall_thickness + cable_room + 3.5 + 2, wall_thickness +4 + 6, -6])
+                scale([1/10, 1/10, 1/10]) 
+                cylinder(70, r1 =10, r2 = 35);
+
+            
+            // Create the camera hollow centered. subtract half the x/y size of the camera board.
             rotate([0, 180, 0])
                 translate([-length, 0, -1])
                     camera_hollow((length / 2) - 12.5,  (width / 2) - (24 / 2) + wall_thickness + 1.5, 0);
