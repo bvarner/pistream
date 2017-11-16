@@ -1,7 +1,14 @@
 // PiStream Camera Mount
 // Raspberry Pi Zero W + Camera 1.3 + CCTV Lens mount
 
+// Diameter of the nozzle plays into the polygon shape for the 
+// slide to move freely but 'taught' for the back cover.
+nozzle_diameter = 0.4;
+
+// Thickness of the walls.
 wall_thickness = 2.5;
+
+// Amount of space for the camera cable to the end of the pi zero.
 cable_room = 10;
 
 // board size + left padding + right padding + wall thickness.
@@ -55,7 +62,7 @@ module mount(x = 0, y = 0, z = 0) {
         // Angle to case
         translate([x, y, z])
             linear_extrude(height = 9)
-                polygon([[13.5, 0],
+                polygon([[13, 0],
                                   [15.5, 0],
                                   [15.5, -2.5]]);
     }
@@ -66,20 +73,20 @@ module camera_hollow(x = 0, y = 0, z = 0) {
     union() {
         // extra space around camera board.
         translate([x - 2, y - 2, z])
-            cube([29, 28, 4]);
+            cube([29, 27, 4]);
         
         // actual size of camera board.
         translate([x, y, z])
             cube([25, 24, 4]);
         
         // camera sensor cavity
-        translate([x + 7.5, y + 4.5, z + 4])
+        translate([x + 7.5, y + 5, z + 4])
             cube([10,10,6]);
 
         // Opening for lens
-        translate([x + 12.5, y+ 9.5, z + 4 + 6])
+        translate([x + 12.5, y+ 10, z + 4 + 6])
         scale([1/10, 1/10, 1/10])
-            cylinder(80, d = 120);
+            cylinder(100, d = 120);
         
         // Sunny cable opening
         translate([x + 7.5, y + 4.5 + 10, z + 4])
@@ -98,18 +105,19 @@ module camera_hollow(x = 0, y = 0, z = 0) {
 
 module camera_pegs(x = 0, y = 0, z = 0) {
     // mounting points for camera board.
-    translate([x + 2, y + 9.5, z + 1.5])
+    translate([x + 2, y + 9.5, z + .5])
         scale([1/10, 1/10, 1/10]) 
-        cylinder(10, r1 = 8, r2 = 10);
-    translate([x + 2 + 21, y + 9.5, z + 1.5])
+        cylinder(20, r1 = 5, r2 = 9);
+    translate([x + 2 + 21, y + 9.5, z + .5])
         scale([1/10, 1/10, 1/10]) 
-        cylinder(10, r1 = 8, r2 = 10);
+        cylinder(20, r1 = 5, r2 = 9);
+    
     translate([x + 2, y + 9.5, z + 2.5])
         scale([1/10, 1/10, 1/10]) 
-        cylinder(15, r = 10);
+        cylinder(15, r = 9);
     translate([x + 2 + 21, y + 9.5, z + 2.5])
         scale([1/10, 1/10, 1/10]) 
-        cylinder(15, r = 10);
+        cylinder(15, r = 9);
 }    
 
 
@@ -178,29 +186,29 @@ color("grey")
                 // Face contour & camera front
                 union() {
                     step = length / 9;
-                    translate([0, width, -6]) rotate([90, 0, 0])
+                    translate([0, width, -7]) rotate([90, 0, 0])
                         linear_extrude(height = width)
-                        polygon([[0, 6],
-                                    [step, 3.5], 
+                        polygon([[0, 7],
+                                    [step, 3.75], 
                                     [step * 2, 1.5],
                                     [step * 3, 0.5],
                                     [step * 4, 0],
                                     [step * 5, 0],
                                     [step * 6, 0.5],
                                     [step * 7, 1.5],
-                                    [step * 8, 3.5],
-                                    [step * 9, 6]
+                                    [step * 8, 3.75],
+                                    [step * 9, 7]
                         ]);
                     
                         // lens mount outline
-                        translate([(length / 2), (width / 2) + 1.5, -12])
+                        translate([(length / 2), (width / 2) + 2, -14])
                             scale([1/10, 1/10, 1/10]) 
                                 // 4 cm diff
                                 cylinder(120, d = 120 + (wall_thickness * 2 * 10));
                 }
                 
                 // Mounting bracket base
-                translate([(length / 2) + 4.5, 0, -6]) rotate([0, 270, 0]) mount();
+                translate([(length / 2) + 4.5, 0, -5.5]) rotate([0, 270, 0]) mount();
             };
             
                 // Create the hollow centered. subtract half the x/y size of the camera board.
@@ -235,10 +243,10 @@ union() {
             polygon([
                 [0,0], 
                 [2.4, 0], 
-                [2.4, wall_thickness * .75 - .4], 
-                [1.6, wall_thickness * .75 - .4], 
-                [.8, (wall_thickness / 2) - .4 ], 
-                [0, (wall_thickness / 2) - .4]
+                [2.4, wall_thickness * .75 - nozzle_diameter], 
+                [1.6, wall_thickness * .75 - nozzle_diameter], 
+                [.8, (wall_thickness / 2) - nozzle_diameter ], 
+                [0, (wall_thickness / 2) - nozzle_diameter]
             ]);
     // For the inverse slide rail side, rotate 180 to extrude in the opposite direction, then rotate & translate into final position.
     translate([100 + length, width, 1]) rotate([0, 270, 0]) 
@@ -247,10 +255,10 @@ union() {
             polygon([
                 [0,0], 
                 [2.4, 0], 
-                [2.4, wall_thickness * .75 - .4], 
-                [1.6, wall_thickness * .75 - .4], 
-                [.8, (wall_thickness / 2) - .4], 
-                [0, (wall_thickness / 2) - .4]
+                [2.4, wall_thickness * .75 - nozzle_diameter], 
+                [1.6, wall_thickness * .75 - nozzle_diameter], 
+                [.8, (wall_thickness / 2) - nozzle_diameter], 
+                [0, (wall_thickness / 2) - nozzle_diameter]
             ]);
     // Case Detents
         translate([100 + wall_thickness * .75, wall_thickness * .5 - .2, 2]) 
