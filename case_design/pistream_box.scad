@@ -123,6 +123,8 @@ module camera_pegs(x = 0, y = 0, z = 0) {
 
 // Actual Box Parts
 color("grey")
+    translate([length, 23, 10])
+    rotate([0, 180, 0])
     union() {
         difference() {
             union() {
@@ -229,53 +231,3 @@ color("grey")
     translate([-length, 0, -1])
         camera_pegs((length / 2) - 12.5,  (width / 2) - (24 / 2) + wall_thickness + 1.5, 0);
 };
-
-    
-// Sliding back of the case
-union() {
-    difference() {
-        translate([100, 0, 0])
-            linear_extrude(height = 1)
-                square([length, width]);
-        translate([100 + wall_thickness, wall_thickness, 1])
-            linear_extrude(height = 1)
-                square([length - (wall_thickness * 2), width - (wall_thickness * 2)]);
-        translate([100, wall_thickness, 1])
-            linear_extrude(height = 1)
-                square([length, width - (wall_thickness * 2)]);
-    };
-
-    // Slide rails
-    translate([100 + length, 0, 1]) rotate([0, 270, 0]) 
-        linear_extrude(height = length)
-            polygon([
-                [0,0], 
-                [2.4, 0], 
-                [2.4, wall_thickness * .75 - nozzle_diameter], 
-                [1.6, wall_thickness * .75 - nozzle_diameter], 
-                [.8, (wall_thickness / 2) - nozzle_diameter ], 
-                [0, (wall_thickness / 2) - nozzle_diameter]
-            ]);
-    // For the inverse slide rail side, rotate 180 to extrude in the opposite direction, then rotate & translate into final position.
-    translate([100 + length, width, 1]) rotate([0, 270, 0]) 
-        linear_extrude(height = length)
-            rotate([180, 0, 0])
-            polygon([
-                [0,0], 
-                [2.4, 0], 
-                [2.4, wall_thickness * .75 - nozzle_diameter], 
-                [1.6, wall_thickness * .75 - nozzle_diameter], 
-                [.8, (wall_thickness / 2) - nozzle_diameter], 
-                [0, (wall_thickness / 2) - nozzle_diameter]
-            ]);
-    // Case Detents
-        translate([100 + wall_thickness * .75, wall_thickness * .5 - .2, 2]) 
-            scale([1/10, 1/10, 1/10]) cylinder(25, d = (.5 * wall_thickness * 10) - 4, center = true);
-        translate([100 + wall_thickness * .75, width - (wall_thickness * .5 -.2), 2]) 
-            scale([1/10, 1/10, 1/10]) cylinder(25, d = (.5 * wall_thickness * 10) - 4, center = true);
-
-
-}
-    
-    
-    
