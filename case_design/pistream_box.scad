@@ -221,8 +221,10 @@ color("grey")
             rotate([0, 180, 0])
                 translate([-length, 0, -1])
                     camera_hollow((length / 2) - 12.5,  (width / 2) - (24 / 2) + wall_thickness + 1.5, 0);
+            
     };
-    
+
+    // Camera support pegs.
     rotate([0, 180, 0])
     translate([-length, 0, -1])
         camera_pegs((length / 2) - 12.5,  (width / 2) - (24 / 2) + wall_thickness + 1.5, 0);
