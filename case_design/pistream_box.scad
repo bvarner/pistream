@@ -84,9 +84,9 @@ module camera_hollow(x = 0, y = 0, z = 0) {
             cube([10,10,6]);
 
         // Opening for lens
-        translate([x + 12.5, y+ 10, z + 6])
+        translate([x + 12.5, y+ 10, z +4])
         scale([1/10, 1/10, 1/10])
-            cylinder(100, d = 120);
+            cylinder(120, d = 120);
         
         // Sunny cable opening
         translate([x + 7.5, y + 4.5 + 10, z + 4])
@@ -95,11 +95,26 @@ module camera_hollow(x = 0, y = 0, z = 0) {
         // LED
         translate([x + 25 - 4, y + 24 - 4, z + 4])
             scale([1/10, 1/10, 1/10]) 
-            cylinder(40, r1 = 25, r2 = 10);
+            cylinder(40, r1 = 17, r2 = 7.5);
                 
         // Opening for signal cable
         translate([x + 2, y - 8, z])
             cube([21, 8, 4]);
+            
+        // camera_mount_holes
+        // Comment these out if you'd rather have pegs.
+        translate([x + 2, y + 9.5, z + 4])
+            scale([1/10, 1/10, 1/10])
+            cylinder(32, r = 9);
+        translate([x + 2 + 21, y + 9.5, z + 4])
+            scale([1/10, 1/10, 1/10])
+            cylinder(32, r = 9);
+        translate([x + 2, y + 9.5 + 12.5, z + 4])
+            scale([1/10, 1/10, 1/10])
+            cylinder(32, r = 9);
+        translate([x + 2 + 21, y + 9.5 + 12.5, z + 4])
+            scale([1/10, 1/10, 1/10])
+            cylinder(32, r = 9);
     }
 }
 
@@ -107,17 +122,17 @@ module camera_pegs(x = 0, y = 0, z = 0) {
     // mounting points for camera board.
     translate([x + 2, y + 9.5, z + .5])
         scale([1/10, 1/10, 1/10]) 
-        cylinder(20, r1 = 5, r2 = 9);
+        cylinder(15, r1 = 5, r2 = 9);
     translate([x + 2 + 21, y + 9.5, z + .5])
         scale([1/10, 1/10, 1/10]) 
-        cylinder(20, r1 = 5, r2 = 9);
+        cylinder(15, r1 = 5, r2 = 9);
     
-    translate([x + 2, y + 9.5, z + 2.5])
+    translate([x + 2, y + 9.5, z + 2])
         scale([1/10, 1/10, 1/10]) 
-        cylinder(15, r = 9);
-    translate([x + 2 + 21, y + 9.5, z + 2.5])
+        cylinder(20, r = 9);
+    translate([x + 2 + 21, y + 9.5, z + 2])
         scale([1/10, 1/10, 1/10]) 
-        cylinder(15, r = 9);
+        cylinder(20, r = 9);
 }    
 
 
@@ -216,7 +231,7 @@ color("grey")
             // Power / Activity LED
             translate([wall_thickness + cable_room + 3.5 + 2, wall_thickness +4 + 6, -6])
                 scale([1/10, 1/10, 1/10]) 
-                cylinder(70, r1 =10, r2 = 35);
+                cylinder(70, r1 =7.5, r2 = 35);
 
             
             // Create the camera hollow centered. subtract half the x/y size of the camera board.
@@ -227,7 +242,7 @@ color("grey")
     };
 
     // Camera support pegs.
-    rotate([0, 180, 0])
-    translate([-length, 0, -1])
-        camera_pegs((length / 2) - 12.5,  (width / 2) - (24 / 2) + wall_thickness + 1.5, 0);
+//    rotate([0, 180, 0])
+//    translate([-length, 0, -1])
+//        camera_pegs((length / 2) - 12.5,  (width / 2) - (24 / 2) + wall_thickness + 1.5, 0);
 };
