@@ -86,7 +86,7 @@ module camera_hollow(x = 0, y = 0, z = 0) {
         // Opening for lens
         translate([x + 12.5, y+ 10, z +4])
         scale([1/10, 1/10, 1/10])
-            cylinder(120, d = 120);
+            cylinder(140, d = 120);
         
         // Sunny cable opening
         translate([x + 7.5, y + 4.5 + 10, z + 4])
@@ -218,7 +218,7 @@ color("grey")
                         ]);
                     
                         // lens mount outline
-                        translate([(length / 2), (width / 2) + 2, -14])
+                        translate([(length / 2), (width / 2) + 2, -16])
                             scale([1/10, 1/10, 1/10]) 
                                 // 4 cm diff
                                 cylinder(120, d = 120 + (wall_thickness * 2 * 10));
@@ -229,9 +229,9 @@ color("grey")
             };
             
             // Power / Activity LED
-            translate([wall_thickness + cable_room + 3.5 + 2, wall_thickness +4 + 6, -6])
+            translate([wall_thickness + cable_room + 3.5 + 2, wall_thickness +4 + 4, -6])
                 scale([1/10, 1/10, 1/10]) 
-                cylinder(70, r1 =7.5, r2 = 35);
+                cylinder(70, r1 =7.5, r2 = 20);
 
             
             // Create the camera hollow centered. subtract half the x/y size of the camera board.
